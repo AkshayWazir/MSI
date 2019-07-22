@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "196340604441",
+    "firebase_url": "https://firestoreproject-8188b.firebaseio.com",
+    "project_id": "firestoreproject-8188b",
+    "storage_bucket": "firestoreproject-8188b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196340604441:android:f332d1763d37d9f7",
+        "android_client_info": {
+          "package_name": "org.lol.wazirbuild.msilib"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196340604441-6kh2bnvfssni69t3qor71i4i84scatbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.lol.wazirbuild.msilib",
+            "certificate_hash": "c62ec548c03630d6895fd5b2345ba7a95f8c737c"
+          }
+        },
+        {
+          "client_id": "196340604441-c1ova21ca0davbod3rg2an1vo62k0af1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQXxRl86pmWVAZeZCYyYK1jB5orf8cN6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196340604441-c1ova21ca0davbod3rg2an1vo62k0af1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

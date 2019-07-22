@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MSI lib</string>
+    <string name="web_client_id">196340604441-6kh2bnvfssni69t3qor71i4i84scatbe.apps.googleusercontent.com</string>
+    <string name="name">Name</string>
+    <string name="enrollment_number">Enrollment Number</string>
+    <string name="bba_b_i"><![CDATA[BBA (B & I)]]></string>>
+</resources>
