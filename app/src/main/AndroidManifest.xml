@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--tools:node="replace">-->
-        <activity android:name=".RegistrationScreen"></activity>
+        <activity android:name=".note_category_Activity"></activity>
+        <activity android:name=".notes_Activity" /> <!-- tools:node="replace"> -->
+        <activity android:name=".RegistrationScreen" />
         <activity android:name=".mainScreen" />
         <activity android:name=".MainActivity">
             <intent-filter>

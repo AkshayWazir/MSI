@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,5 +42,11 @@ public class mainScreen extends AppCompatActivity {
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+    //--------------------------------------------------------------------------------
+    //OnClickListeners
+    void onClickNotes(View view){
+        startActivity(new Intent(mainScreen.this,notes_Activity.class));
+
     }
 }
