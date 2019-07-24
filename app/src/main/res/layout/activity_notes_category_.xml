@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".note_category_Activity">
+    tools:context=".notes_category_Activity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/category_notes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
