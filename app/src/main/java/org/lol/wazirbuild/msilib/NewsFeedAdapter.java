@@ -6,13 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class NewsFeedAdapter extends FragmentStatePagerAdapter {
-    private int[] mImageID = {R.drawable.it_news_feed, R.drawable.ece_news_feed, R.drawable.it_news_feed};
-    private String[] branches = {"CSE", "ECE", "IT"};
-    private String[] titles = new String[3];
-    private String[] messages = new String[3];
+
 
     public NewsFeedAdapter(FragmentManager fm) {
         super(fm);
@@ -30,6 +25,6 @@ public class NewsFeedAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }

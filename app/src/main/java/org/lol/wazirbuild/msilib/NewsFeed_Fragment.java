@@ -45,57 +45,58 @@ public class NewsFeed_Fragment extends Fragment {
 
         String message = getArguments().getString("pos");
 
-        switch (message) {
-            case ("3"):
-                dr.collection("NewsFeed").document("CSE").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        txtmsg.setText(documentSnapshot.get("DES").toString());
-                        txttit.setText(documentSnapshot.get("TIT").toString());
-                        txtbranch.setText("CSE");
-                        back.setImageResource(R.drawable.cse_news_feed);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Error in loading", Toast.LENGTH_LONG).show();
-                    }
-                });
-                break;
-            case ("1"):
-                dr.collection("NewsFeed").document("IT").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        txtmsg.setText(documentSnapshot.get("DES").toString());
-                        txttit.setText(documentSnapshot.get("TIT").toString());
-                        txtbranch.setText("IT");
-                        back.setImageResource(R.drawable.it_news_feed);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Error in loading", Toast.LENGTH_LONG).show();
-                    }
-                });
-                break;
-            case ("2"):
-                dr.collection("NewsFeed").document("ECE").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        txtmsg.setText(documentSnapshot.get("DES").toString());
-                        txttit.setText(documentSnapshot.get("TIT").toString());
-                        txtbranch.setText("ECE");
-                        back.setImageResource(R.drawable.ece_news_feed);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Error in loading", Toast.LENGTH_LONG).show();
-                    }
-                });
-                break;
+        if (Integer.parseInt(message) > 3) {
+            message = Integer.toString((Integer.parseInt(message) % 3) + 1);
 
         }
+
+        if (message.equals("3")) {
+            dr.collection("NewsFeed").document("CSE").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    txtmsg.setText(documentSnapshot.get("DES").toString());
+                    txttit.setText(documentSnapshot.get("TIT").toString());
+                    txtbranch.setText("CSE");
+                    back.setImageResource(R.drawable.cse_news_feed);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Error in loading", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else if (message.equals("2")) {
+            dr.collection("NewsFeed").document("IT").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    txtmsg.setText(documentSnapshot.get("DES").toString());
+                    txttit.setText(documentSnapshot.get("TIT").toString());
+                    txtbranch.setText("IT");
+                    back.setImageResource(R.drawable.it_news_feed);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Error in loading", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else if (message.equals("1")) {
+            dr.collection("NewsFeed").document("ECE").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    txtmsg.setText(documentSnapshot.get("DES").toString());
+                    txttit.setText(documentSnapshot.get("TIT").toString());
+                    txtbranch.setText("ECE");
+                    back.setImageResource(R.drawable.ece_news_feed);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Error in loading", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
         return view;
     }
 
