@@ -1,64 +1,35 @@
 package org.lol.wazirbuild.msilib;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import java.util.ArrayList;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class NewsFeedAdapter extends PagerAdapter {
-    private Context mcontext;
-    private LayoutInflater inflater;
+public class NewsFeedAdapter extends FragmentStatePagerAdapter {
+    private int[] mImageID = {R.drawable.it_news_feed, R.drawable.ece_news_feed, R.drawable.it_news_feed};
+    private String[] branches = {"CSE", "ECE", "IT"};
+    private String[] titles = new String[3];
+    private String[] messages = new String[3];
 
-    private ArrayList<Integer> mImageID;
-    private ArrayList<String> titles;
-    private ArrayList<String> messages;
-    private ArrayList<String> branchs;
+    public NewsFeedAdapter(FragmentManager fm) {
+        super(fm);
+    }
 
-
-    NewsFeedAdapter(Context context) {
-        mcontext = context;
+    @Override
+    public Fragment getItem(int position) {
+        NewsFeed_Fragment frag = new NewsFeed_Fragment();
+        Bundle bundle = new Bundle();
+        position += 1;
+        bundle.putString("pos", Integer.toString(position));
+        frag.setArguments(bundle);
+        return frag;
     }
 
     @Override
     public int getCount() {
-        return mImageID.size();//this represents the length of the newsfeed
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return false;
-    }
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        inflater = (LayoutInflater) mcontext.getSystemService(mcontext.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.news_feed_adapter, container, false);
-        ImageView back = view.findViewById(R.id.background);
-        TextView title = view.findViewById(R.id.title_newsFeed);
-        TextView message = view.findViewById(R.id.information_newsFeed);
-        TextView branch = view.findViewById(R.id.branch_newsFeed);
-
-        back.setImageResource(mImageID.get(position));
-        title.setText(titles.get(position));
-        message.setText(messages.get(position));
-        branch.setText(branchs.get(position));
-
-        container.addView(view);
-        return view;
-
-    }
-
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((RelativeLayout) object);
+        return 3;
     }
 }
