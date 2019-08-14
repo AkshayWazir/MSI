@@ -41,13 +41,18 @@ public class NewsFeed_Fragment extends Fragment {
         txttit = view.findViewById(R.id.frag_title);
         txtbranch = view.findViewById(R.id.frag_branch);
         back = view.findViewById(R.id.frag_background);
+        //complete this
+
+        String Branches[] = new String[3];
+        String title[] = new String[3];
+        String mess[] = new String[3];
+        int image[] = new int[3];
 
 
         String message = getArguments().getString("pos");
 
         if (Integer.parseInt(message) > 3) {
             message = Integer.toString((Integer.parseInt(message) % 3) + 1);
-
         }
 
         if (message.equals("3")) {
