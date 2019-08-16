@@ -6,11 +6,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class NewsFeedAdapter extends FragmentStatePagerAdapter {
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+public class NewsFeedAdapter extends FragmentStatePagerAdapter {
+    private FirebaseFirestore dr;
+    String mess[] = new String[3];
+    String title[] = new String[3];
+    String Branches[] = new String[3];
+    int image[] = new int[3];
 
     public NewsFeedAdapter(FragmentManager fm) {
         super(fm);
+
     }
 
     @Override
@@ -18,7 +27,7 @@ public class NewsFeedAdapter extends FragmentStatePagerAdapter {
         NewsFeed_Fragment frag = new NewsFeed_Fragment();
         Bundle bundle = new Bundle();
         position += 1;
-        bundle.putString("pos", Integer.toString(position));
+        bundle.putInt("pos", position);
         frag.setArguments(bundle);
         return frag;
     }

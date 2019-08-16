@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("MSI Library");
+//        getSupportActionBar().setTitle("MSI Library");
         this.EuserId = findViewById(R.id.user_id);
         this.password = findViewById(R.id.user_password);
         this.signInBtn = findViewById(R.id.signinbtn);

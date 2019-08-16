@@ -7,12 +7,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class mainScreen extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    Toolbar toolbar;
 
 
     @Override
@@ -20,6 +22,8 @@ public class mainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         mAuth = FirebaseAuth.getInstance();
+        toolbar = findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
 
     }
 
