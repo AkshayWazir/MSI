@@ -15,9 +15,8 @@
         app:title="Welcome"
         app:titleTextColor="#ffff" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:id="@+id/main_container"
-        android:name="org.lol.wazirbuild.msilib.MainScreen_Frag"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

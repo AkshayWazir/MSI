@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void register(View view) {
-//        finish();
         startActivity(new Intent(MainActivity.this, RegistrationScreen.class));
     }
     @Override
