@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        getSupportActionBar().setTitle("MSI Library");
         this.EuserId = findViewById(R.id.user_id);
         this.password = findViewById(R.id.user_password);
         this.signInBtn = findViewById(R.id.signinbtn);
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int getFinalWidth() {
-        return (int) getResources().getDimension(R.dimen.get_width);
+        return bar.getWidth();
     }
 
 

@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,13 +36,17 @@ public class RegistrationScreen extends AppCompatActivity implements OpenDialog.
     private Button sbmtBtn;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    Toolbar toolbar;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_screen);
-        getSupportActionBar().setTitle("Registration");
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Register");
         enroll = findViewById(R.id.textInputLayout2);
         nam = findViewById(R.id.textInputLayout);
         college = findViewById(R.id.college_change);
