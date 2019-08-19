@@ -1,5 +1,6 @@
 package org.lol.wazirbuild.msilib;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,7 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class mainScreen extends AppCompatActivity {
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
-    ImageView view;
+    ImageView noteTitleImage;
+    FragmentManager fm =getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class mainScreen extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        noteTitleImage=findViewById(R.id.notes_title_image);
     }
 
     @Override
@@ -45,8 +50,10 @@ public class mainScreen extends AppCompatActivity {
     }
     //--------------------------------------------------------------------------------
     //OnClickListeners
-    void onClickNotes(View view){
-        startActivity(new Intent(mainScreen.this,notes_Activity.class));
 
+    void onClickNotes(View view){
+        ActivityOptions options=ActivityOptions
+                .makeSceneTransitionAnimation(mainScreen.this,noteTitleImage,"main_to_notes");
+        startActivity(new Intent(mainScreen.this,Notes_Activity.class),options.toBundle());
     }
 }

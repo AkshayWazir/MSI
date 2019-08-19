@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Main_Screen_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mainScreen">
@@ -86,13 +87,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="onClickNotes"
-            >
+            android:onClick="onClickNotes">
 
             <ImageView
+                android:id="@+id/notes_title_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                android:transitionName="main_to_notes"
                 android:src="@drawable/notes_image"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -244,7 +246,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="183dp" />
+        app:layout_constraintGuide_percent="0.25307798" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
