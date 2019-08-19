@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Welcome"
         app:titleTextColor="#ffff" />
-
+  
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="0dp"

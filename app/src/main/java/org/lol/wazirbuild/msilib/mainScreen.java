@@ -1,10 +1,12 @@
 package org.lol.wazirbuild.msilib;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +20,6 @@ public class mainScreen extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,5 +52,13 @@ public class mainScreen extends AppCompatActivity {
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+    //--------------------------------------------------------------------------------
+    //OnClickListeners
+
+    void onClickNotes(View view){
+        ActivityOptions options=ActivityOptions
+                .makeSceneTransitionAnimation(mainScreen.this,noteTitleImage,"main_to_notes");
+        startActivity(new Intent(mainScreen.this,Notes_Activity.class),options.toBundle());
     }
 }
