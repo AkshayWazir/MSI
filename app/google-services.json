@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "196340604441-6kh2bnvfssni69t3qor71i4i84scatbe.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.lol.wazirbuild.msilib",
-            "certificate_hash": "c62ec548c03630d6895fd5b2345ba7a95f8c737c"
-          }
-        },
-        {
           "client_id": "196340604441-c1ova21ca0davbod3rg2an1vo62k0af1.apps.googleusercontent.com",
           "client_type": 3
         }
