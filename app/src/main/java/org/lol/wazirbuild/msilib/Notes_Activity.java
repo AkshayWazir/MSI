@@ -20,7 +20,6 @@ public class Notes_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_);
-        getSupportActionBar().hide();
 
         recyclerView=findViewById(R.id.notes_recycler);
         NR=new Notes_Recycler(this);

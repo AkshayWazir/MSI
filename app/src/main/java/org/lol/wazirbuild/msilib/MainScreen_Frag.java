@@ -1,16 +1,15 @@
 package org.lol.wazirbuild.msilib;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,15 +21,13 @@ import java.util.TimerTask;
 public class MainScreen_Frag extends Fragment {
     private final long DELAY_MS = 500;
     private final long PERIOD_MS = 4000;
-    ImageView view;
     private ViewPager viewPager;
     private NewsFeedAdapter adapter;
     private int currentPage = 0;
     private Timer timer;
-    private FirebaseAuth mAuth;
+    ConstraintLayout layout;
 
     public MainScreen_Frag() {
-        // Required empty public constructor
     }
 
     @Override
@@ -56,6 +53,13 @@ public class MainScreen_Frag extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_main_screen_, container, false);
+        layout = view.findViewById(R.id.notes_start);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Notes_Activity.class));
+            }
+        });
         viewPager = view.findViewById(R.id.news_feed);
         adapter = new NewsFeedAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);

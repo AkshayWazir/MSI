@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class mainScreen extends AppCompatActivity implements View.OnClickListener {
+public class mainScreen extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     Toolbar toolbar;
@@ -53,13 +52,4 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case (R.id.notes_start):
-                startActivity(new Intent(mainScreen.this, Notes_Activity.class));
-                break;
-        }
-    }
 }
