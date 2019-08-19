@@ -16,7 +16,6 @@ public class Notes_Category_activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notes_category_activity);
-        getSupportActionBar().hide();
 
         recyclerView = findViewById(R.id.category_notes_Recycler);
         NCR = new notes_categoryRecycler(this);
