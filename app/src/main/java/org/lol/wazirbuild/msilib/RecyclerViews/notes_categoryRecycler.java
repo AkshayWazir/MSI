@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.core.content.MimeTypeFilter;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 
