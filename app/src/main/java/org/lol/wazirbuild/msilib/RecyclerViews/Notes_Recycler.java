@@ -20,25 +20,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.lol.wazirbuild.msilib.Notes_Category_activity;
 import org.lol.wazirbuild.msilib.R;
 
+import java.util.ArrayList;
+
 public class Notes_Recycler extends RecyclerView.Adapter<Notes_Recycler.viewHolder> {
     Context context;
+    ArrayList<String> TITLE ;
 
-    public Notes_Recycler(Context context) {
+    public Notes_Recycler(Context context,ArrayList<String> T) {
         this.context = context;
+        TITLE=T;
     }
 
     @NonNull
     @Override
-    public Notes_Recycler.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_reycler_item, parent, false);
         return new viewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final Notes_Recycler.viewHolder holder, int position) {
-        holder.Title.setText("Maths");
+    public void onBindViewHolder(@NonNull final viewHolder viewHolder, final int position) {
 
-        holder.c.setOnClickListener(new View.OnClickListener() {
+        viewHolder.Title.setText(TITLE.get(position));
+        viewHolder.c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -49,17 +53,19 @@ public class Notes_Recycler extends RecyclerView.Adapter<Notes_Recycler.viewHold
                     vibrator.vibrate(25);
                 }
                 ActivityOptions options = ActivityOptions
-                        .makeSceneTransitionAnimation((Activity) context, holder.cardView, "notes-notes_category");
-                context.startActivity(new Intent(context, Notes_Category_activity.class), options.toBundle());
-
+                        .makeSceneTransitionAnimation((Activity) context, viewHolder.cardView, "notes-notes_category");
+                Intent i=new Intent(context,Notes_Category_activity.class);
+                i.putExtra("choosen_Subject",TITLE.get(position));
+                context.startActivity(i, options.toBundle());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return 7;
+        return TITLE.size();
     }
+
 
     public class viewHolder extends RecyclerView.ViewHolder {
         TextView Title;
@@ -73,6 +79,5 @@ public class Notes_Recycler extends RecyclerView.Adapter<Notes_Recycler.viewHold
             cardView = itemView.findViewById(R.id.notes_cardView);
         }
     }
-
 
 }

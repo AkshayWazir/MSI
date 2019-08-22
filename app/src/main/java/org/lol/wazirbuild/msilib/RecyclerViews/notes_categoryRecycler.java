@@ -1,22 +1,12 @@
 package org.lol.wazirbuild.msilib.RecyclerViews;
 
-import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.Parcelable;
 import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -33,54 +23,53 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.content.MimeTypeFilter;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import org.lol.wazirbuild.msilib.R;
+import org.lol.wazirbuild.msilib.model.notes_category_model;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
 
-import static android.provider.MediaStore.AUTHORITY;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 
 public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryRecycler.viewHolder> {
     private Context context;
-    private int i = 0;
+    String TAG="Mytag";
+    ArrayList<notes_category_model> list;
 
-
-    String[] sites = new String[]{"https://www.tutorialspoint.com/firebase/firebase_tutorial.pdf"
-            , "http://ptgmedia.pearsoncmg.com/images/9780134191409/samplepages/9780134191409.pdf"};
-
-
-    public notes_categoryRecycler(Context context) {
+    public notes_categoryRecycler(Context context, ArrayList<notes_category_model> list) {
+        Log.d(TAG, "notes_categoryRecycler: ");
         this.context = context;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        this.list=list;
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
     }
 
 
     @Override
     public notes_categoryRecycler.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_notes_item, parent, false);
         return new viewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final notes_categoryRecycler.viewHolder holder, int position) {
-        holder.Title.setText("Notes");
-        holder.notes_provider.setText("Notes Provider");
+    public void onBindViewHolder(@NonNull final notes_categoryRecycler.viewHolder holder, final int position) {
+        holder.Title.setText(list.get(position).getTitle());
+        Log.d(TAG, "onBindViewHolder: "+list.get(position).getNotes_provider());
+        holder.notes_provider.setText(list.get(position).getNotes_provider());
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (i > 1)
-                    i = 0;
+
 
                 File notesDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/MSI Library/Notes");
-                File outputFile = new File(notesDirectory, URLUtil.guessFileName(sites[i], null,
-                        MimeTypeMap.getFileExtensionFromUrl(sites[i])));
+                File outputFile = new File(notesDirectory, URLUtil.guessFileName(list.get(position).getUrl(),null
+                , MimeTypeMap.getFileExtensionFromUrl(list.get(position).getUrl())));
                 if (!notesDirectory.exists()) {
                     notesDirectory.mkdirs();
                 }
@@ -91,8 +80,8 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
                 } else {
                     vibrator.vibrate(25);
                 }
-                openPDF(outputFile);
-                i++;
+                openPDF(outputFile,list.get(position).getUrl());
+                Log.d(TAG, "onClick: "+list.get(position).getTitle());
             }
 
 
@@ -103,7 +92,7 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
 
 
     public int getItemCount() {
-        return 5;
+        return list.size();
     }
 
 
@@ -128,25 +117,33 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
             return false;
     }
 
-    private void openPDF(File outputFile) {
+    private void openPDF(File outputFile,String link) {
 
         if (!dofileExists(outputFile)) {
             Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show();
-            downloadFile(sites[i]);
+            downloadFile(link);
 
         } else if (outputFile != null) {
             Toast.makeText(context, "Opening File...", Toast.LENGTH_SHORT).show();
-            Uri path = Uri.fromFile(outputFile);
+
+            Uri path =null;
+            Intent pdf = new Intent(Intent.ACTION_VIEW);
+            pdf.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            pdf.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Intent pdf = new Intent(Intent.ACTION_VIEW);
-                pdf.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri contentUri = FileProvider.getUriForFile(context.getApplicationContext(), "com.your.package.fileProvider", outputFile);
-                pdf.setDataAndType(path, "application/pdf");
-                try {
-                    context.startActivity(pdf);
-                } catch (ActivityNotFoundException e) {
-                    e.getMessage();
-                }
+                path = FileProvider.getUriForFile(context, "ibas.provider", outputFile);
+
+                pdf.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }else{
+                path = Uri.fromFile(outputFile);
+            }
+
+            pdf.setDataAndType(path, "application/pdf");
+            try {
+                context.startActivity(pdf);
+            } catch (ActivityNotFoundException e) {
+                e.getMessage();
             }
         }
     }
