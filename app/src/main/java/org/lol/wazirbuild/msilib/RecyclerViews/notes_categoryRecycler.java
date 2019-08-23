@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

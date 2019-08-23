@@ -1,8 +1,6 @@
 package org.lol.wazirbuild.msilib;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,11 +24,23 @@ public class Notes_Activity extends AppCompatActivity {
     RecyclerView recyclerView;
     Notes_Recycler NR;
 
-    ArrayList<String> TITLE=new ArrayList<>();
+    ArrayList<String> TITLE = new ArrayList<>();
 
     private FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
     private DocumentReference reference = dataBase.collection("Notes").document("MSIT")
             .collection("IT").document("Second Year");
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notes_);
+        recyclerView = findViewById(R.id.notes_recycler);
+        NR = new Notes_Recycler(this, TITLE);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(NR);
+        NR.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
 
     public Notes_Activity() {
         reference.collection("Subjects").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -44,26 +54,9 @@ public class Notes_Activity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes_);
-
-        recyclerView = findViewById(R.id.notes_recycler);
-
-
-        NR = new Notes_Recycler(this,TITLE);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
-        ((LinearLayoutManager) manager).setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(NR);
-        NR.notifyDataSetChanged();
-        recyclerView.scheduleLayoutAnimation();
     }
 
 }

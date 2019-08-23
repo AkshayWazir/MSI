@@ -70,7 +70,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0000ff" />
+        android:background="@drawable/li_back"/>
 
     <TextView
         android:id="@+id/registerNow"
@@ -116,17 +116,6 @@
             android:filterTouchesWhenObscured="false"
             android:visibility="invisible" />
     </FrameLayout>
-
-    <View
-        android:id="@+id/revealView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#0000ff"
-        android:elevation="20sp"
-        android:visibility="invisible"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="183dp" />
-
 
     <ImageView
         android:id="@+id/imageView5"

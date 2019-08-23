@@ -1,21 +1,10 @@
 package org.lol.wazirbuild.msilib;
 
-import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,17 +25,15 @@ import java.util.ArrayList;
 
 public class Notes_Category_activity extends AppCompatActivity {
 
-    String TAG="Mytag";
-    private String TITLE="Title";
-    private String DATE="date";
-    private String PROVIDER="notes_provider";
-    private String URL="url";
+    String TAG = "Mytag";
+    private String TITLE = "Title";
+    private String DATE = "date";
+    private String PROVIDER = "notes_provider";
+    private String URL = "url";
 
-
-    RecyclerView recyclerView;
-    TextView sub_Title;
-    notes_categoryRecycler NCR;
-    ImageView titleimg;
+    private RecyclerView recyclerView;
+    private TextView sub_Title;
+    private notes_categoryRecycler NCR;
 
     String ref;
     ArrayList<notes_category_model> list = new ArrayList<>();
@@ -61,15 +48,11 @@ public class Notes_Category_activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.notes_category_activity);
-
-
 
         Bundle bundle = getIntent().getExtras();
         ref = bundle.getString("choosen_Subject");
-        sub_Title=findViewById(R.id.Subject_title);
+        sub_Title = findViewById(R.id.sub_tit);
         sub_Title.setText(ref);
 
 
@@ -78,8 +61,8 @@ public class Notes_Category_activity extends AppCompatActivity {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (DocumentSnapshot d : queryDocumentSnapshots) {
-                    notesCategoryModel = new notes_category_model(d.get(TITLE)+"",d.get(DATE)+""
-                            ,d.get(PROVIDER)+"",d.get(URL)+"");
+                    notesCategoryModel = new notes_category_model(d.get(TITLE) + "", d.get(DATE) + ""
+                            , d.get(PROVIDER) + "", d.get(URL) + "");
                     list.add(notesCategoryModel);
                     NCR.notifyDataSetChanged();
                 }
