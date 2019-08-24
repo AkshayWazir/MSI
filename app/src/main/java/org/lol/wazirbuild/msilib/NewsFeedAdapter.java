@@ -6,12 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class NewsFeedAdapter extends FragmentStatePagerAdapter {
-    private FirebaseFirestore dr;
     String mess[] = new String[3];
     String title[] = new String[3];
     String Branches[] = new String[3];
@@ -19,7 +14,6 @@ public class NewsFeedAdapter extends FragmentStatePagerAdapter {
 
     public NewsFeedAdapter(FragmentManager fm) {
         super(fm);
-
     }
 
     @Override

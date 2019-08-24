@@ -21,9 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -37,7 +34,6 @@ public class RegistrationScreen extends AppCompatActivity implements OpenDialog.
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     Toolbar toolbar;
-
 
 
     @Override
@@ -111,6 +107,7 @@ public class RegistrationScreen extends AppCompatActivity implements OpenDialog.
     }
 
     private void engineer() {
+
         final String name = nam.getEditText().getText().toString().trim();
         final String enrollment = enroll.getEditText().getText().toString().trim();
         String prog, sh;
@@ -156,19 +153,7 @@ public class RegistrationScreen extends AppCompatActivity implements OpenDialog.
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    db.collection(collegeSelect).document(year).collection(object.getBranch()).document(enrollment).set(object).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(RegistrationScreen.this, "Welcome " + name, LENGTH_LONG).show();
-                            setResult(RESULT_OK, new Intent());
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegistrationScreen.this, "Failed to register Try again", LENGTH_LONG).show();
-                        }
-                    });
+                    save_to_fire(enrollment, object);
                 } else {
                     Toast.makeText(RegistrationScreen.this, "SignUp Failed", LENGTH_LONG).show();
                 }
@@ -222,22 +207,43 @@ public class RegistrationScreen extends AppCompatActivity implements OpenDialog.
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    db.collection(collegeSelect).document(year).collection(object.getBranch()).document(enrollment).set(object).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(RegistrationScreen.this, "Welcome " + name, LENGTH_LONG).show();
-                            setResult(RESULT_OK, new Intent());
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegistrationScreen.this, "Failed to register Try again", LENGTH_LONG).show();
-                        }
-                    });
+                    save_to_fire(enrollment, object);
                 } else {
                     Toast.makeText(RegistrationScreen.this, "SignUp Failed", LENGTH_LONG).show();
                 }
+            }
+        });
+    }
+
+    private void save_to_fire(String number, Student obj) {
+        StringBuilder year_string = new StringBuilder();
+        StringBuilder course_string = new StringBuilder();
+        StringBuilder college_string = new StringBuilder();
+        StringBuilder roll_string = new StringBuilder();
+        int i;
+        for (i = 0; i <= 2; i++) {
+            roll_string.append(number.charAt(i));
+        }
+        for (i = 3; i <= 6; i++) {
+            college_string.append(number.charAt(i));
+        }
+        for (i = 7; i <= 8; i++) {
+            course_string.append(number.charAt(i));
+        }
+        for (i = 9; i <= 10; i++) {
+            year_string.append(number.charAt(i));
+        }
+        db.collection(year_string.toString()).document(college_string.toString()).collection(course_string.toString()).document(roll_string.toString()).set(obj).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(RegistrationScreen.this, "Welcome ", LENGTH_LONG).show();
+                setResult(RESULT_OK, new Intent());
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(RegistrationScreen.this, "Failed to register Try again", LENGTH_LONG).show();
             }
         });
     }

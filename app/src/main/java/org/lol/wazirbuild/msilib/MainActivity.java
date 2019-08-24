@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout signInBtn;
     TextView sigInText;
     ProgressBar bar;
-    View revealView;
     TextInputLayout EuserId, password;
     private FirebaseAuth mAuth;
     int sw, sh; //width of SignIn btn
@@ -99,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+
                     Intent intent = new Intent(MainActivity.this, mainScreen.class);
+
                     startActivity(intent);
                 } else {
                     rev_or_hid(false);

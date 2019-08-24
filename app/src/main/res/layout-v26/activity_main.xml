@@ -70,7 +70,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/li_back"/>
+        android:background="#0000ff"/>
 
     <TextView
         android:id="@+id/registerNow"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Sign in"
-            android:textColor="#fff"
+            android:textColor="#0000ff"
             android:textSize="30sp" />
 
         <ProgressBar

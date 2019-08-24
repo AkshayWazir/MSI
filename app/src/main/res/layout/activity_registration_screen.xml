@@ -276,7 +276,7 @@
         android:background="@drawable/signin_btn"
         android:elevation="20sp"
         android:text="SUBMIT"
-        android:textColor="#fff"
+        android:textColor="#000fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
