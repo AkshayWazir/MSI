@@ -16,19 +16,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout signInBtn;
     TextView sigInText;
     ProgressBar bar;
+    String email;
     TextInputLayout EuserId, password;
     private FirebaseAuth mAuth;
     int sw, sh; //width of SignIn btn
+    private FirebaseFirestore db;
+    private DatabaseReference dr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         this.signInBtn = findViewById(R.id.signinbtn);
         this.sigInText = findViewById(R.id.signinText);
         this.bar = findViewById(R.id.progressBar);
-        mAuth = FirebaseAuth.getInstance();
+        this.mAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
         permissionCheck();
         sw = signInBtn.getWidth();
         sh = signInBtn.getHeight();
@@ -79,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(MainActivity.this, mainScreen.class));
-            finish();
+            String rollNum = Objects.requireNonNull(currentUser).getEmail();
+            setInstanceOfUser(rollNum);
         }
     }
 
@@ -89,19 +100,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Unauthorised", Toast.LENGTH_LONG).show();
             return;
         }
-        String email = EuserId.getEditText().getText().toString().trim();
+        email = EuserId.getEditText().getText().toString().trim();
         String pass = password.getEditText().getText().toString();
-        email += "@msit.com";
+//        email += "@msit.com";
 
         rev_or_hid(true);
-        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email + "@msit.com", pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
-                    Intent intent = new Intent(MainActivity.this, mainScreen.class);
-
-                    startActivity(intent);
+                    setInstanceOfUser(email);
                 } else {
                     rev_or_hid(false);
                     Toast.makeText(MainActivity.this, "Failed to LogIn", Toast.LENGTH_LONG).show();
@@ -109,6 +117,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setInstanceOfUser(String number) {
+        StringBuilder year_string = new StringBuilder();
+        StringBuilder course_string = new StringBuilder();
+        StringBuilder college_string = new StringBuilder();
+        StringBuilder roll_string = new StringBuilder();
+        int i;
+        for (i = 0; i <= 2; i++) {
+            roll_string.append(number.charAt(i));
+        }
+        for (i = 3; i <= 6; i++) {
+            college_string.append(number.charAt(i));
+        }
+        for (i = 7; i <= 8; i++) {
+            course_string.append(number.charAt(i));
+        }
+        for (i = 9; i <= 10; i++) {
+            year_string.append(number.charAt(i));
+        }
+        db.collection(year_string.toString()).document(college_string.toString()).collection(course_string.toString()).document(roll_string.toString())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Student obj = documentSnapshot.toObject(Student.class);
+                        Intent intent = new Intent(MainActivity.this, mainScreen.class);
+                        intent.putExtra("STUDENT_OBJECT", new Gson().toJson(obj));
+                        startActivity(intent);
+                        finish();
+                    }
+                });
     }
 
     private void rev_or_hid(boolean res) {

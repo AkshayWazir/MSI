@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,6 +49,16 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
         layout = findViewById(R.id.notes_start);
         viewPager = findViewById(R.id.news_feed);
         setSupportActionBar(toolbar);
+
+        // here i make use of the passed object of the user
+        String jsonMyObject;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            jsonMyObject = extras.getString("STUDENT_OBJECT");
+            Student myObject = new Gson().fromJson(jsonMyObject, Student.class);
+            Toast.makeText(mainScreen.this, "Welcome :" + myObject.getName(), Toast.LENGTH_LONG).show();
+        }
+
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
             public void run() {
