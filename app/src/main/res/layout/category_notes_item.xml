@@ -9,16 +9,31 @@
     android:clickable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notes_category_rowItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ripple_rounded"
-        android:id="@+id/notes_category_rowItem"
-        >
+        android:background="@drawable/ripple_rounded">
+
+        <ImageView
+            android:id="@+id/notes_category_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:elevation="0dp"
+            android:focusable="auto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/option_dots_logo" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
             android:orientation="horizontal"
             android:weightSum="10"
             tools:ignore="MissingConstraints">
@@ -31,34 +46,75 @@
                 android:contentDescription="TODO"
                 android:src="@drawable/ic_picture_as_pdf_black_24dp" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:orientation="vertical"
                 tools:ignore="MissingConstraints">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/category_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:paddingEnd="20dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="false"
                     android:text="Title"
-                    android:textSize="30sp" />
+                    android:textAlignment="viewStart"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/notes_provider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="notes_provider" />
-            </LinearLayout>
+                    android:paddingEnd="20dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="false"
+                    android:text="Author :"
+                    android:textAlignment="viewStart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+                <TextView
+                    android:id="@+id/category_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:paddingEnd="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Uploaded Date : "
+                    android:textAlignment="viewStart"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notes_provider" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

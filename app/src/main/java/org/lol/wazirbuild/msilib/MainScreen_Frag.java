@@ -26,6 +26,7 @@ public class MainScreen_Frag extends Fragment {
     private int currentPage = 0;
     private Timer timer;
     ConstraintLayout layout;
+    ConstraintLayout creation_start;
 
     public MainScreen_Frag() {
     }
@@ -54,6 +55,13 @@ public class MainScreen_Frag extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_main_screen_, container, false);
         layout = view.findViewById(R.id.notes_start);
+        creation_start=view.findViewById(R.id.creation_start);
+        creation_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Creation_Activity.class));
+            }
+        });
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

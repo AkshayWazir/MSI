@@ -245,6 +245,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creation_start"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

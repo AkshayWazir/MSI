@@ -10,16 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Notes_recycler_row"
         android:layout_width="match_parent"
-        android:background="@drawable/ripple_rounded"
-        android:layout_height="100sp">
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_rounded">
 
         <TextView
             android:id="@+id/Notes_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:text="Maths"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"

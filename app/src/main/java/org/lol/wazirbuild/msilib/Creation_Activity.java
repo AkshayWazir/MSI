@@ -1,46 +1,55 @@
 package org.lol.wazirbuild.msilib;
 
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.lol.wazirbuild.msilib.RecyclerViews.Notes_Recycler;
+import org.lol.wazirbuild.msilib.RecyclerViews.creation_adapter;
+import org.lol.wazirbuild.msilib.model.creation_item_model;
 
 import java.util.ArrayList;
 
-public class Notes_Activity extends AppCompatActivity {
+public class Creation_Activity extends AppCompatActivity {
 
+    Toolbar toolbar;
     RecyclerView recyclerView;
-    Notes_Recycler NR;
+    creation_adapter creationAdapter;
 
-    ArrayList<String> TITLE=new ArrayList<>();
+    ArrayList<creation_item_model> list=new ArrayList<>();
 
     private FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
-    private DocumentReference reference = dataBase.collection("Notes").document("MSIT")
-            .collection("IT").document("Second Year");
 
-    public Notes_Activity() {
-        reference.collection("Subjects").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    public Creation_Activity() {
+
+        dataBase.collection("Creation")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (DocumentSnapshot d : queryDocumentSnapshots) {
-                    TITLE.add(d.getId());
-                    NR.notifyDataSetChanged();
+                    creation_item_model cim=new creation_item_model(d.get("description").toString()
+                            ,d.get("imageUrl").toString(),d.get("title").toString());
+                    list.add(cim);
+                    creationAdapter.notifyDataSetChanged();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -54,22 +63,21 @@ public class Notes_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        toolbar = findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.notesActivityStatusBar));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.creationStatusBar));
         }
-        setContentView(R.layout.activity_notes_);
+        setContentView(R.layout.activity_creation_);
 
-        recyclerView = findViewById(R.id.notes_recycler);
+        creationAdapter = new creation_adapter(this,list);
 
+        recyclerView = findViewById(R.id.creation_recycler);
 
-        NR = new Notes_Recycler(this,TITLE);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         ((LinearLayoutManager) manager).setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(NR);
-        NR.notifyDataSetChanged();
-        recyclerView.scheduleLayoutAnimation();
-    }
+        recyclerView.setAdapter(creationAdapter);
 
+    }
 }
