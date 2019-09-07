@@ -1,4 +1,4 @@
-package org.lol.wazirbuild.msilib.model;
+package org.lol.wazirbuild.msilib.Database.model;
 
 public class creation_item_model {
 

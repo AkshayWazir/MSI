@@ -3,25 +3,22 @@ package org.lol.wazirbuild.msilib.RecyclerViews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Handler;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.lol.wazirbuild.msilib.R;
-import org.lol.wazirbuild.msilib.model.creation_item_model;
+import org.lol.wazirbuild.msilib.Database.model.creation_item_model;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class creation_adapter extends RecyclerView.Adapter<creation_adapter.viewHolder> {
@@ -44,6 +41,29 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
     public void onBindViewHolder(@NonNull final viewHolder holder, final int position) {
         holder.Title.setText(list.get(position).getTitle());
         holder.Description.setText(list.get(position).getDescription());
+        holder.option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, holder.option);
+                popupMenu.inflate(R.menu.notes_catogery_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.note_details:
+                                return true;
+                            case R.id.rate_note:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+        DownloadImageTask d= new DownloadImageTask(holder.image);
+        d.execute(list.get(position).getImageUrl());
 
     }
 
@@ -53,15 +73,40 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
+        ImageView image,option;
         TextView Title;
         TextView Description;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
+            option=itemView.findViewById(R.id.creation_menu_option);
             image = itemView.findViewById(R.id.creation_TitleImage);
             Title = itemView.findViewById(R.id.creation_item_Titletext);
             Description = itemView.findViewById(R.id.creation_item_Descriptiontext);
+        }
+    }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 
