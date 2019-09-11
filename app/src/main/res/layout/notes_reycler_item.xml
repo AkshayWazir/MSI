@@ -4,8 +4,9 @@
     android:id="@+id/notes_cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:layout_marginBottom="4dp">
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/rounded"
+    android:clickable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Notes_recycler_row"

@@ -3,16 +3,22 @@ package org.lol.wazirbuild.msilib.RecyclerViews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.lol.wazirbuild.msilib.R;
@@ -62,7 +68,7 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
                 popupMenu.show();
             }
         });
-        DownloadImageTask d= new DownloadImageTask(holder.image);
+        DownloadImageTask d = new DownloadImageTask(holder.image);
         d.execute(list.get(position).getImageUrl());
 
     }
@@ -73,13 +79,13 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        ImageView image,option;
+        ImageView image, option;
         TextView Title;
         TextView Description;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            option=itemView.findViewById(R.id.creation_menu_option);
+            option = itemView.findViewById(R.id.creation_menu_option);
             image = itemView.findViewById(R.id.creation_TitleImage);
             Title = itemView.findViewById(R.id.creation_item_Titletext);
             Description = itemView.findViewById(R.id.creation_item_Descriptiontext);
@@ -89,25 +95,26 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
+
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
+            Bitmap bitmap = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
+                bitmap = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return mIcon11;
+            return bitmap;
         }
 
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-    }
 
+    }
 }

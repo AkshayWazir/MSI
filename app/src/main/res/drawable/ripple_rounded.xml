@@ -2,10 +2,8 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="?android:attr/colorControlHighlight">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
+            <corners android:radius="20dp"/>
             <solid android:color="#F4F4F4"/>
         </shape>
-        <bitmap android:src="@drawable/math_background"
-            android:alpha="0.5"
-            />
     </item>
     </ripple>
