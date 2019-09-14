@@ -22,11 +22,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     int sw, sh; //width of SignIn btn
     private FirebaseFirestore db;
-    private DatabaseReference dr;
+    private DocumentReference dr1, dr2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
         }
         email = EuserId.getEditText().getText().toString().trim();
         String pass = password.getEditText().getText().toString();
-//        email += "@msit.com";
-
         rev_or_hid(true);
         mAuth.signInWithEmailAndPassword(email + "@msit.com", pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -137,18 +136,42 @@ public class MainActivity extends AppCompatActivity {
         for (i = 9; i <= 10; i++) {
             year_string.append(number.charAt(i));
         }
-        db.collection(year_string.toString()).document(college_string.toString()).collection(course_string.toString()).document(roll_string.toString())
+        final Intent intent = new Intent(MainActivity.this, mainScreen.class);
+        dr1 = db
+                .collection(year_string.toString())// here is the year
+                .document(college_string.toString()) // here is the college
+                .collection(course_string.toString())//  here is the course
+                .document(roll_string.toString());//  here is the roll number
+        dr2 = db
+                .collection(year_string.toString())
+                .document(college_string.toString())
+                .collection(course_string.toString())
+                .document("NEWS_FEED");
+
+
+        dr1
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Student obj = documentSnapshot.toObject(Student.class);
-                        Intent intent = new Intent(MainActivity.this, mainScreen.class);
                         intent.putExtra("STUDENT_OBJECT", new Gson().toJson(obj));
-                        startActivity(intent);
-                        finish();
                     }
                 });
+        dr2
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        if (task.isSuccessful()) {
+                            HashMap<String, Object> obj1 = (HashMap<String, Object>) snapshot.getData();
+                            intent.putExtra("FEEDS", obj1);
+                        }
+                    }
+                });
+        startActivity(intent);
+        finish();
     }
 
     private void rev_or_hid(boolean res) {

@@ -21,6 +21,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,12 +53,12 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
         setSupportActionBar(toolbar);
 
         // here i make use of the passed object of the user
-        String jsonMyObject;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            jsonMyObject = extras.getString("STUDENT_OBJECT");
+            String jsonMyObject  = extras.getString("STUDENT_OBJECT");
             Student myObject = new Gson().fromJson(jsonMyObject, Student.class);
-            Toast.makeText(mainScreen.this, "Welcome :" + myObject.getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(mainScreen.this, "Welcome " + myObject.getName(), Toast.LENGTH_LONG).show();
+            Map<String, Object> news = (HashMap<String, Object>) getIntent().getSerializableExtra("FEED");
         }
 
         final Handler handler = new Handler();
