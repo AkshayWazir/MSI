@@ -3,13 +3,16 @@ package org.lol.wazirbuild.msilib.RecyclerViews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,29 +49,48 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
 
     @Override
     public void onBindViewHolder(@NonNull final viewHolder holder, final int position) {
-        holder.Title.setText(list.get(position).getTitle());
-        holder.Description.setText(list.get(position).getDescription());
-        holder.option.setOnClickListener(new View.OnClickListener() {
+//        holder.Title.setText(list.get(position).getTitle());
+//        holder.Description.setText(list.get(position).getDescription());
+//        holder.like.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if ("unlike".equals(v.getTag())) {
+//                    ((ImageView) v).setImageResource(R.drawable.liked);
+//                    v.setTag("liked");
+//                }
+//                if ("liked".equals(v.getTag())) {
+//                    ((ImageView) v).setImageResource(R.drawable.like);
+//                    v.setTag("unlike");
+//                }
+//
+//            }
+//        });
+
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(context, holder.option);
-                popupMenu.inflate(R.menu.notes_catogery_menu);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.note_details:
-                                return true;
-                            case R.id.rate_note:
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                popupMenu.show();
+                AlertDialog.Builder alt = new AlertDialog.Builder(context);
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View view = inflater.inflate(R.layout.creation_item_alert_dialog, null);
+                alt.setView(view);
+
+                AlertDialog alertDialog = alt.create();
+
+                TextView title = view.findViewById(R.id.creation_title_alert);
+                TextView description = view.findViewById(R.id.creation_description_alert);
+                ImageView whatsapp = view.findViewById(R.id.creation_contact);
+
+
+                title.setText(list.get(position).getTitle());
+                description.setText(list.get(position).getDescription());
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                alertDialog.show();
+
             }
         });
+
         DownloadImageTask d = new DownloadImageTask(holder.image);
         d.execute(list.get(position).getImageUrl());
 
@@ -79,16 +102,14 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        ImageView image, option;
-        TextView Title;
-        TextView Description;
+        ImageView image, like;
+        LinearLayout layout;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            option = itemView.findViewById(R.id.creation_menu_option);
+//            like = itemView.findViewById(R.id.like);
             image = itemView.findViewById(R.id.creation_TitleImage);
-            Title = itemView.findViewById(R.id.creation_item_Titletext);
-            Description = itemView.findViewById(R.id.creation_item_Descriptiontext);
+            layout = itemView.findViewById(R.id.linlay);
         }
     }
 
@@ -117,4 +138,5 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
         }
 
     }
+
 }

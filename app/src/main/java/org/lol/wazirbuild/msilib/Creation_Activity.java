@@ -24,6 +24,12 @@ import java.util.ArrayList;
 
 public class Creation_Activity extends AppCompatActivity {
 
+    private static String DESCRIPTION="description";
+    private static String IMAGEURL="imageUrl";
+    private static String TITLE="title";
+    private static String LIKEDBY="likedBy";
+    private static String DISLIKEDBY="dislikedBy";
+
     Toolbar toolbar;
     RecyclerView recyclerView;
     creation_adapter creationAdapter;
@@ -39,8 +45,9 @@ public class Creation_Activity extends AppCompatActivity {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (DocumentSnapshot d : queryDocumentSnapshots) {
-                    creation_item_model cim=new creation_item_model(d.get("description").toString()
-                            ,d.get("imageUrl").toString(),d.get("title").toString());
+                    creation_item_model cim=new creation_item_model(d.get(DESCRIPTION)+""
+                            ,d.get(IMAGEURL)+"",d.get(TITLE)+""
+                            ,d.get(LIKEDBY)+"",d.get(DISLIKEDBY)+"");
                     list.add(cim);
                     creationAdapter.notifyDataSetChanged();
                 }
