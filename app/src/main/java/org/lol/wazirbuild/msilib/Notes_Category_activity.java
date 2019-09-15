@@ -1,13 +1,21 @@
 package org.lol.wazirbuild.msilib;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,10 +26,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.lol.wazirbuild.msilib.Database.viewModels.notes_category_viewModel;
 import org.lol.wazirbuild.msilib.RecyclerViews.notes_categoryRecycler;
-import org.lol.wazirbuild.msilib.model.notes_category_model;
+import org.lol.wazirbuild.msilib.Database.model.notes_category_model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Notes_Category_activity extends AppCompatActivity {
 
@@ -30,13 +41,18 @@ public class Notes_Category_activity extends AppCompatActivity {
     private String DATE = "date";
     private String PROVIDER = "notes_provider";
     private String URL = "url";
+    private String ID = "id";
 
-    private RecyclerView recyclerView;
-    private TextView sub_Title;
-    private notes_categoryRecycler NCR;
+    private notes_category_viewModel viewModel;
+
+
+    RecyclerView recyclerView;
+    TextView sub_Title;
+    notes_categoryRecycler NCR;
+    ImageView titleimg;
 
     String ref;
-    ArrayList<notes_category_model> list = new ArrayList<>();
+    List<notes_category_model> list = new ArrayList<>();
     notes_category_model notesCategoryModel;
 
     private FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
@@ -48,42 +64,90 @@ public class Notes_Category_activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.notesActivityStatusBar));
+        }
+
         setContentView(R.layout.notes_category_activity);
-
-        Bundle bundle = getIntent().getExtras();
-        ref = bundle.getString("choosen_Subject");
-        sub_Title = findViewById(R.id.sub_tit);
-        sub_Title.setText(ref);
-
-
-        reference.collection("Subjects").document(ref).collection("Notes")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (DocumentSnapshot d : queryDocumentSnapshots) {
-                    notesCategoryModel = new notes_category_model(d.get(TITLE) + "", d.get(DATE) + ""
-                            , d.get(PROVIDER) + "", d.get(URL) + "");
-                    list.add(notesCategoryModel);
-                    NCR.notifyDataSetChanged();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         recyclerView = findViewById(R.id.category_notes_Recycler);
 
-        NCR = new notes_categoryRecycler(this, list);
+        initViewModel();
+
+        initRecyclerView();
+
+
+        Toast.makeText(this, isNetworkAvailable() + "", Toast.LENGTH_SHORT).show();
+
+        Bundle bundle = getIntent().getExtras();
+        ref = bundle.getString("choosen_Subject");
+        sub_Title = findViewById(R.id.Subject_title);
+        sub_Title.setText(ref);
+
+
+        if (isNetworkAvailable()) {
+
+            reference.collection("Subjects").document(ref).collection("Notes")
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (DocumentSnapshot d : queryDocumentSnapshots) {
+                        notesCategoryModel = new notes_category_model(Integer.parseInt(d.get(ID).toString()),
+                                d.get(TITLE) + "",d.get(DATE) + "",
+                                d.get(PROVIDER) + "", d.get(URL) + "");
+                        viewModel.InsertSingle(notesCategoryModel);
+                        NCR.notifyDataSetChanged();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            Toast.makeText(this, "Offline", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    private void initRecyclerView() {
+
         RecyclerView.LayoutManager l = new LinearLayoutManager(this);
         ((LinearLayoutManager) l).setOrientation(RecyclerView.VERTICAL);
-
         recyclerView.setLayoutManager(l);
         recyclerView.setAdapter(NCR);
-        NCR.notifyDataSetChanged();
+    }
+
+    private void initViewModel() {
+
+        viewModel = ViewModelProviders.of(this)
+                .get(notes_category_viewModel.class);
+        viewModel.viewModelList.observe(Notes_Category_activity.this, new Observer<List<notes_category_model>>() {
+            @Override
+            public void onChanged(List<notes_category_model> notes_category_models) {
+                list.clear();
+                list.addAll(notes_category_models);
+
+                if (NCR == null) {
+                    NCR = new notes_categoryRecycler(Notes_Category_activity.this, (ArrayList<notes_category_model>) list);
+                    recyclerView.setAdapter(NCR);
+                } else {
+                    NCR.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

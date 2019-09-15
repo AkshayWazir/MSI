@@ -1,10 +1,12 @@
 package org.lol.wazirbuild.msilib;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,18 +32,6 @@ public class Notes_Activity extends AppCompatActivity {
     private DocumentReference reference = dataBase.collection("Notes").document("MSIT")
             .collection("IT").document("Second Year");
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes_);
-        recyclerView = findViewById(R.id.notes_recycler);
-        NR = new Notes_Recycler(this, TITLE);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(NR);
-        NR.notifyDataSetChanged();
-        recyclerView.scheduleLayoutAnimation();
-    }
-
     public Notes_Activity() {
         reference.collection("Subjects").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -57,6 +47,27 @@ public class Notes_Activity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.notesActivityStatusBar));
+        }
+        setContentView(R.layout.activity_notes_);
+
+        recyclerView = findViewById(R.id.notes_recycler);
+
+
+        NR = new Notes_Recycler(this,TITLE);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
+        ((LinearLayoutManager) manager).setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(NR);
+        NR.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 
 }

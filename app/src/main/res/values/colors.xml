@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="notesActivityStatusBar">#EB3349</color>
+    <color name="creationToolbar">#734B6D</color>
+    <color name="creationStatusBar">#42275a</color>
 </resources>

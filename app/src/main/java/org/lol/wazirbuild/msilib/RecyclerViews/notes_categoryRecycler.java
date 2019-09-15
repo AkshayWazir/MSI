@@ -4,73 +4,69 @@ import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
-import androidx.core.content.MimeTypeFilter;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import org.lol.wazirbuild.msilib.R;
-import org.lol.wazirbuild.msilib.model.notes_category_model;
-
+import org.lol.wazirbuild.msilib.Database.model.notes_category_model;
 import java.io.File;
 import java.util.ArrayList;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryRecycler.viewHolder> {
     private Context context;
-    String TAG="Mytag";
+    String TAG = "Mytag";
     ArrayList<notes_category_model> list;
 
     public notes_categoryRecycler(Context context, ArrayList<notes_category_model> list) {
-        Log.d(TAG, "notes_categoryRecycler: ");
         this.context = context;
-        this.list=list;
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
+        this.list = list;
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
 
     @Override
     public notes_categoryRecycler.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: ");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_notes_item, parent, false);
         return new viewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final notes_categoryRecycler.viewHolder holder, final int position) {
+
         holder.Title.setText(list.get(position).getTitle());
-        Log.d(TAG, "onBindViewHolder: "+list.get(position).getNotes_provider());
-        holder.notes_provider.setText(list.get(position).getNotes_provider());
+        holder.notes_provider.setText("Author : " + list.get(position).getNotes_provider());
+        holder.date.setText("Upload Date: " + list.get(position).getDate());
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 File notesDirectory = new File(Environment.getExternalStorageDirectory().toString() + "/MSI Library/Notes");
-                File outputFile = new File(notesDirectory, URLUtil.guessFileName(list.get(position).getUrl(),null
-                , MimeTypeMap.getFileExtensionFromUrl(list.get(position).getUrl())));
+                File outputFile = new File(notesDirectory, URLUtil.guessFileName(list.get(position).getUrl(), null
+                        , MimeTypeMap.getFileExtensionFromUrl(list.get(position).getUrl())));
                 if (!notesDirectory.exists()) {
                     notesDirectory.mkdirs();
                 }
@@ -81,11 +77,33 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
                 } else {
                     vibrator.vibrate(25);
                 }
-                openPDF(outputFile,list.get(position).getUrl());
-                Log.d(TAG, "onClick: "+list.get(position).getTitle());
+                openPDF(outputFile, list.get(position).getUrl(), holder.isDownloading
+                        , list.get(position).getTitle(), list.get(position).getNotes_provider());
             }
 
 
+        });
+
+        holder.option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, holder.option);
+                popupMenu.inflate(R.menu.notes_catogery_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.note_details:
+                                return true;
+                            case R.id.rate_note:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+            }
         });
 
 
@@ -98,14 +116,20 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
 
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        TextView Title, notes_provider;
+        TextView Title, notes_provider, date, size,Note_Thumbnail;
         ConstraintLayout constraintLayout;
         CardView cardView;
+        ImageView option;
+        boolean isDownloading = false;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             Title = itemView.findViewById(R.id.category_title);
             constraintLayout = itemView.findViewById(R.id.notes_category_rowItem);
+            date = itemView.findViewById(R.id.category_date);
+            option = itemView.findViewById(R.id.notes_category_option);
+        //    Note_Thumbnail=itemView.findViewById(R.id.note_thumbnail);
+//            size = itemView.findViewById(R.id.size);
             notes_provider = itemView.findViewById(R.id.notes_provider);
             cardView = itemView.findViewById(R.id.notes_category_cardView);
         }
@@ -118,16 +142,21 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
             return false;
     }
 
-    private void openPDF(File outputFile,String link) {
+    private void openPDF(File outputFile, String link, boolean isDownloading, String Title, String Description) {
 
         if (!dofileExists(outputFile)) {
-            Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show();
-            downloadFile(link);
+            if(!isNetworkAvailable())
+                Toast.makeText(context, "will be downloded when network connection is avialable..", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show();
+            downloadFile(link, isDownloading, Title, Description);
+//            Toast.makeText(context, "Being Downloaded...", Toast.LENGTH_SHORT).show();
+
 
         } else if (outputFile != null) {
             Toast.makeText(context, "Opening File...", Toast.LENGTH_SHORT).show();
 
-            Uri path =null;
+            Uri path = null;
             Intent pdf = new Intent(Intent.ACTION_VIEW);
             pdf.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             pdf.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -136,7 +165,7 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
                 path = FileProvider.getUriForFile(context, "ibas.provider", outputFile);
 
                 pdf.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }else{
+            } else {
                 path = Uri.fromFile(outputFile);
             }
 
@@ -149,10 +178,12 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
         }
     }
 
-    private void downloadFile(String download_url) {
+    private void downloadFile(String download_url, boolean isDownloading, String Title, String Description) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(download_url));
-        request.setTitle("Notes Downloading");
-        request.setDescription("being downloaded...");
+        request.setTitle(Title);
+        request.setDescription(Description)
+                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE
+                        | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         String nameOfFile = URLUtil.guessFileName(download_url, null,
                 MimeTypeMap.getFileExtensionFromUrl(download_url));
@@ -161,7 +192,12 @@ public class notes_categoryRecycler extends RecyclerView.Adapter<notes_categoryR
         DownloadManager manager = (DownloadManager) context
                 .getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
-
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }
