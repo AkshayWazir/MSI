@@ -4,24 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#fff"
     tools:context=".mainScreen">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Welcome"
-        app:titleTextColor="#fff" />
-
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -29,8 +16,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="2dp"
+        android:background="@drawable/back_not"
+        android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,23 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/frameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/back_lib"
-                tools:layout_editor_absoluteX="-168dp"
-                tools:layout_editor_absoluteY="-15dp" />
-
             <ImageView
                 android:id="@+id/notesCategory_titleIMG"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:src="@drawable/enter"
-                app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-                app:layout_constraintEnd_toEndOf="@+id/frameLayout" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -79,21 +56,77 @@
                 android:textColor="#ffffff"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frameLayout" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="3dp"
+        android:background="@drawable/back_not"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/guideline5">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/admin_block"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/enter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Update News\nAdd Creations\nDeveloper Access"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/t11" />
+
+            <TextView
+                android:id="@+id/t11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="start"
+                android:text="Admin"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:transitionName="trans_notes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/back_not"
+        android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +142,6 @@
                 android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/back_not"
                 android:transitionName="trans_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -151,90 +183,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/frameLayout2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+    <FrameLayout
+        android:id="@+id/creations"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/guideline4">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:id="@+id/frameLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/back_rate"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@drawable/enter"
-                app:layout_constraintBottom_toBottomOf="@+id/frameLayout3"
-                app:layout_constraintEnd_toEndOf="@+id/frameLayout3" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rate Your Teachers\nKnow Your Teacher\nContact Teacher"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="start"
-                android:text="Rate"
-                android:textColor="#ffffff"
-                android:textSize="30sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frameLayout3" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="3dp"
+        android:background="@drawable/back_not"
+        android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/guideline3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cre_launch"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -243,13 +210,11 @@
                 android:id="@+id/frameLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/back_cre"
+                android:transitionName="cre_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent" />
 
-
-            </FrameLayout>
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -281,12 +246,65 @@
                 android:text="Creations"
                 android:textColor="#ffffff"
                 android:textSize="30sp"
+                android:transitionName="cre_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/frameLayout4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
+        android:id="@+id/cardView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/back_not"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/guideline4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/enter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate Your Teachers\nKnow Your Teacher\nContact Teacher"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="start"
+                android:text="Rate"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/card_upload"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -294,8 +312,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="2dp"
+        android:background="@drawable/back_not"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="parent"
@@ -305,21 +322,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/frm_lay_1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/back_uplo"
-                tools:layout_editor_absoluteX="-168dp"
-                tools:layout_editor_absoluteY="-15dp" />
 
             <ImageView
                 android:id="@+id/vect_left1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/enter"
-                app:layout_constraintBottom_toBottomOf="@+id/frm_lay_1"
-                app:layout_constraintEnd_toEndOf="@+id/frm_lay_1" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/t3"
@@ -342,82 +352,25 @@
                 android:textColor="#ffffff"
                 android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frm_lay_1" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back_not_title"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/guideline5">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/admin_block"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <FrameLayout
-                android:id="@+id/frameLayout11"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/back_admin"
-                android:transitionName="trans_back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </FrameLayout>
-
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/enter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/frameLayout11" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Update News\nAdd Creations\nDeveloper Access"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/t11" />
-
-            <TextView
-                android:id="@+id/t11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="start"
-                android:text="Admin"
-                android:textColor="#ffffff"
-                android:textSize="30sp"
-                android:transitionName="trans_notes"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/frameLayout11" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Dashboard"
+        app:titleTextColor="#fff" />
 
 
     <androidx.constraintlayout.widget.Guideline

@@ -9,8 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,9 +31,7 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
     private final long PERIOD_MS = 4000;
     private ViewPager viewPager;
     private NewsFeedAdapter adapter;
-    ConstraintLayout layout;
-    TextView t_view;
-    FrameLayout fl_fo_trans;
+    ConstraintLayout layout, layout1;
 
     private FirebaseAuth mAuth;
     Toolbar toolbar;
@@ -45,17 +41,19 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         mAuth = FirebaseAuth.getInstance();
-        toolbar = findViewById(R.id.tool_bar);
-        t_view = findViewById(R.id.t2);
-        fl_fo_trans = findViewById(R.id.frameLayout2);
+
         layout = findViewById(R.id.notes_start);
+        layout1 = findViewById(R.id.cre_launch);
+
         viewPager = findViewById(R.id.news_feed);
+
+        toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
         // here i make use of the passed object of the user
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String jsonMyObject  = extras.getString("STUDENT_OBJECT");
+            String jsonMyObject = extras.getString("STUDENT_OBJECT");
             Student myObject = new Gson().fromJson(jsonMyObject, Student.class);
             Toast.makeText(mainScreen.this, "Welcome " + myObject.getName(), Toast.LENGTH_LONG).show();
             Map<String, Object> news = (HashMap<String, Object>) getIntent().getSerializableExtra("FEED");
@@ -70,7 +68,6 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
                 viewPager.setCurrentItem(currentPage++, true);
             }
         };
-
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -80,7 +77,9 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
         }, DELAY_MS, PERIOD_MS);
         adapter = new NewsFeedAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
         layout.setOnClickListener(this);
+        layout1.setOnClickListener(this);
     }
 
     @Override
@@ -107,8 +106,16 @@ public class mainScreen extends AppCompatActivity implements View.OnClickListene
             case (R.id.notes_start):
                 Intent go = new Intent(mainScreen.this, Notes_Activity.class);
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(mainScreen.this,
-                        new Pair[]{Pair.create(t_view, "trans_notes"), Pair.create(fl_fo_trans, "trans_back")});
+                        Pair.create(findViewById(R.id.t2), "trans_notes"),
+                        Pair.create(findViewById(R.id.frameLayout2), "trans_back"));
                 startActivity(go, options.toBundle());
+                break;
+            case (R.id.cre_launch):
+                Intent go1 = new Intent(mainScreen.this, Creation_Activity.class);
+                ActivityOptions opt1 = ActivityOptions.makeSceneTransitionAnimation(mainScreen.this,
+                        Pair.create(findViewById(R.id.textView5), "cre_title"),
+                        Pair.create(findViewById(R.id.frameLayout4), "cre_back"));
+                startActivity(go1, opt1.toBundle());
                 break;
         }
 

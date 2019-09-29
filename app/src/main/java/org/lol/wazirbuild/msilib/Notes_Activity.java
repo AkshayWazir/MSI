@@ -52,18 +52,14 @@ public class Notes_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.notesActivityStatusBar));
-        }
         setContentView(R.layout.activity_notes_);
 
         recyclerView = findViewById(R.id.notes_recycler);
 
 
         NR = new Notes_Recycler(this,TITLE);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
-        ((LinearLayoutManager) manager).setOrientation(RecyclerView.VERTICAL);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(NR);
         NR.notifyDataSetChanged();

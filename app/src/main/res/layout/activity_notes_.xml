@@ -7,33 +7,17 @@
     android:layout_height="match_parent"
     android:layout_weight="8">
 
-
-    <FrameLayout
-        android:id="@+id/frameLayout6"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/back_not_title"
         android:transitionName="trans_back"
-        android:background="@drawable/back_not"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Notes"
+        app:titleTextColor="#fff" />
 
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="10sp"
-        android:text="Notes"
-        android:textColor="#fff"
-        android:transitionName="trans_notes"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
-        app:layout_constraintStart_toStartOf="@+id/frameLayout6" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"

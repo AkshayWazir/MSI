@@ -49,23 +49,6 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
 
     @Override
     public void onBindViewHolder(@NonNull final viewHolder holder, final int position) {
-//        holder.Title.setText(list.get(position).getTitle());
-//        holder.Description.setText(list.get(position).getDescription());
-//        holder.like.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if ("unlike".equals(v.getTag())) {
-//                    ((ImageView) v).setImageResource(R.drawable.liked);
-//                    v.setTag("liked");
-//                }
-//                if ("liked".equals(v.getTag())) {
-//                    ((ImageView) v).setImageResource(R.drawable.like);
-//                    v.setTag("unlike");
-//                }
-//
-//            }
-//        });
-
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +74,7 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
             }
         });
 
-        DownloadImageTask d = new DownloadImageTask(holder.image);
+        DownloadImageTask d = new DownloadImageTask(holder.image,holder.layout);
         d.execute(list.get(position).getImageUrl());
 
     }
@@ -110,15 +93,19 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
 //            like = itemView.findViewById(R.id.like);
             image = itemView.findViewById(R.id.creation_TitleImage);
             layout = itemView.findViewById(R.id.linlay);
+
         }
     }
 
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
+        LinearLayout manage;
 
-        public DownloadImageTask(ImageView bmImage) {
+        private DownloadImageTask(ImageView bmImage, LinearLayout layout) {
             this.bmImage = bmImage;
+            this.manage = layout;
+
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -135,6 +122,7 @@ public class creation_adapter extends RecyclerView.Adapter<creation_adapter.view
 
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
+            manage.setVisibility(View.VISIBLE);
         }
 
     }

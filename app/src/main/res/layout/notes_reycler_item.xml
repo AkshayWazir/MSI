@@ -4,8 +4,9 @@
     android:id="@+id/notes_cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     android:background="@drawable/rounded"
-    android:layout_marginBottom="4dp">
+    android:layout_margin="3sp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Notes_recycler_row"
@@ -16,11 +17,25 @@
             android:id="@+id/Notes_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:text="Maths"
+            android:shadowColor="#00070303"
+            android:text="Subject"
+            android:textColor="#000"
             android:textSize="30sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/books"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

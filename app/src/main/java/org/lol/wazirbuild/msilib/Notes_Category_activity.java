@@ -6,13 +6,12 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,12 +25,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.lol.wazirbuild.msilib.Database.model.notes_category_model;
 import org.lol.wazirbuild.msilib.Database.viewModels.notes_category_viewModel;
 import org.lol.wazirbuild.msilib.RecyclerViews.notes_categoryRecycler;
-import org.lol.wazirbuild.msilib.Database.model.notes_category_model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Notes_Category_activity extends AppCompatActivity {
@@ -47,9 +45,8 @@ public class Notes_Category_activity extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
-    TextView sub_Title;
     notes_categoryRecycler NCR;
-    ImageView titleimg;
+    Toolbar toolbar;
 
     String ref;
     List<notes_category_model> list = new ArrayList<>();
@@ -65,16 +62,11 @@ public class Notes_Category_activity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.notesActivityStatusBar));
-        }
-
         setContentView(R.layout.notes_category_activity);
 
         recyclerView = findViewById(R.id.category_notes_Recycler);
 
         initViewModel();
-
         initRecyclerView();
 
 
@@ -82,8 +74,8 @@ public class Notes_Category_activity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         ref = bundle.getString("choosen_Subject");
-        sub_Title = findViewById(R.id.Subject_title);
-        sub_Title.setText(ref);
+        toolbar = findViewById(R.id.tool_bar_subject);
+        toolbar.setTitle(ref);
 
 
         if (isNetworkAvailable()) {
@@ -94,7 +86,7 @@ public class Notes_Category_activity extends AppCompatActivity {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     for (DocumentSnapshot d : queryDocumentSnapshots) {
                         notesCategoryModel = new notes_category_model(Integer.parseInt(d.get(ID).toString()),
-                                d.get(TITLE) + "",d.get(DATE) + "",
+                                d.get(TITLE) + "", d.get(DATE) + "",
                                 d.get(PROVIDER) + "", d.get(URL) + "");
                         viewModel.InsertSingle(notesCategoryModel);
                         NCR.notifyDataSetChanged();
@@ -115,15 +107,13 @@ public class Notes_Category_activity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-
-        RecyclerView.LayoutManager l = new LinearLayoutManager(this);
-        ((LinearLayoutManager) l).setOrientation(RecyclerView.VERTICAL);
+        LinearLayoutManager l = new LinearLayoutManager(this);
+        l.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(l);
         recyclerView.setAdapter(NCR);
     }
 
     private void initViewModel() {
-
         viewModel = ViewModelProviders.of(this)
                 .get(notes_category_viewModel.class);
         viewModel.viewModelList.observe(Notes_Category_activity.this, new Observer<List<notes_category_model>>() {
